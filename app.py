@@ -8,7 +8,7 @@ import pickle
 import nltk
 
 # Load the dataset
-file_path = 'C:\\Users\\KIIT\\Downloads\\New folder\\combined_data.xlsx'
+file_path = 'combined_data.xlsx'
 data = pd.read_excel(file_path)
 data.replace({-1: 0, 1: 1}, inplace=True)
 data['overall_sentiment'] = data.drop(columns=['sentence']).apply(lambda row: 1 if row.sum() > 0 else 0, axis=1)
