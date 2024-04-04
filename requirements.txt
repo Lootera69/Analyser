@@ -5,3 +5,4 @@ keras
 flask
 nltk
 openpyxl
+gunicorn
