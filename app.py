@@ -1,25 +1,66 @@
-# Install required packages
-# !pip install flask
-
-# Import necessary libraries
-from flask import Flask, request, render_template_string
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import Embedding, GlobalAveragePooling1D, Dense
 import pickle
-from tensorflow.keras.models import load_model
 import nltk
-from keras.preprocessing.sequence import pad_sequences
 
-# Download the required NLTK data
-nltk.download('punkt')
+# Load the dataset
+file_path = 'C:\\Users\\KIIT\\Downloads\\New folder\\combined_data.xlsx'
+data = pd.read_excel(file_path)
+data.replace({-1: 0, 1: 1}, inplace=True)
+data['overall_sentiment'] = data.drop(columns=['sentence']).apply(lambda row: 1 if row.sum() > 0 else 0, axis=1)
 
-# Load the saved model and tokenizer
-model = load_model('sentiment_model.h5')
-with open('tokenizer.pickle', 'rb') as handle:
-    tokenizer = pickle.load(handle)
+# Initialize tokenizer and fit on sentences
+tokenizer = Tokenizer()
+tokenizer.fit_on_texts(data['sentence'])
 
-# Create Flask app
+# Convert sentences to sequences and pad them
+sequences = tokenizer.texts_to_sequences(data['sentence'])
+X = pad_sequences(sequences)
+y = data['overall_sentiment'].values
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Build the model
+vocab_size = len(tokenizer.word_index) + 1
+max_length = X.shape[1]
+model = Sequential([
+    Embedding(vocab_size, 16),
+    GlobalAveragePooling1D(),
+    Dense(24, activation='relu'),
+    Dense(1, activation='sigmoid')
+])
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.fit(X_train, y_train, epochs=20, validation_data=(X_test, y_test))
+
+# Function to analyze sentiment
+def analyze_sentiment(text):
+    negative_text = ''
+    count = 0
+    paragraphs = text.split('\n\n')
+    for paragraph in paragraphs:
+        sentences = nltk.tokenize.sent_tokenize(paragraph)
+        for sentence in sentences:
+            sequence = tokenizer.texts_to_sequences([sentence])
+            padded_sequence = pad_sequences(sequence, maxlen=max_length)
+            prediction = model.predict(padded_sequence)[0][0]
+            if prediction >= 0.5:
+                count += 1
+                negative_text += f'<span class="negative-sentence">{sentence}</span> '
+            else:
+                negative_text += sentence + ' '
+            negative_text += '<br><br>'
+        negative_text += '<br>'
+    return negative_text, count
+
+# Flask app
+from flask import Flask, request, render_template_string
 app = Flask(__name__)
 
-# Define the route for the main page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     dark_mode = request.cookies.get('dark_mode', '')
@@ -29,28 +70,6 @@ def index():
         return render_template_string(html_template, negative_text=negative_text, count=count, dark_mode=dark_mode)
     return render_template_string(html_template, dark_mode=dark_mode)
 
-# Function to analyze sentiment
-def analyze_sentiment(text):
-    negative_text = ''
-    count = 0
-    paragraphs = text.split('\n\n')  # Split text into paragraphs
-    for paragraph in paragraphs:
-        sentences = nltk.tokenize.sent_tokenize(paragraph)
-        for sentence in sentences:
-            sequence = tokenizer.texts_to_sequences([sentence])
-            padded_sequence = pad_sequences(sequence, maxlen=X.shape[1])
-            prediction = model.predict(padded_sequence)[0][0]
-            if prediction >= 0.5:
-                count += 1
-                negative_text += f'<span class="negative-sentence">{sentence}</span> '
-            else:
-                negative_text += sentence + ' '
-            negative_text += '<br><br>'  # Add <br> after each sentence
-        negative_text += '<br>'  # Add <br> between paragraphs
-    return negative_text, count
-
-
-# HTML template
 html_template = """
 <!DOCTYPE html>
 <html>
@@ -81,7 +100,7 @@ html_template = """
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       textarea {
-        width: calc(100% - 22px); /* Adjusted width to account for border */
+        width: calc(100% - 22px);
         height: 150px;
         padding: 10px;
         font-size: 16px;
@@ -113,24 +132,23 @@ html_template = """
       .negative-sentence {
         color: red;
       }
-      /* Border style */
       .bottom-border {
         position: fixed;
         bottom: 0;
         left: 0;
-        width: calc(100% - 50px); /* Adjusted width to account for padding */
-        background-color: #333; /* Adjust background color as needed */
-        padding: 1px 20px; /* Smaller padding */
+        width: calc(100% - 50px);
+        background-color: #333;
+        padding: 1px 20px;
         text-align: center;
         font-size: 12px;
-        border-top: 1px solid #ccc; /* Adjust border color and thickness as needed */
+        border-top: 1px solid #ccc;
         border-bottom-left-radius: 1px;
         border-bottom-right-radius: 1px;
       }
       .disclaimer {
-        font-size: 13px; /* Smaller font size */
+        font-size: 13px;
         color: #999;
-        margin-top: 0.1px; /* Smaller margin */
+        margin-top: 0.1px;
         margin-bottom: 0.1px;
       }
     </style>
@@ -148,19 +166,12 @@ html_template = """
       <p>{{ negative_text|safe }}</p>
     </div>
     {% endif %}
-    <!-- Disclaimer -->
     <div class="bottom-border">
       <p class="disclaimer">Disclaimer: Unfair clause analyzer can make mistakes. Take a moment to verify pertinent information.</p>
     </div>
   </body>
 </html>
-
 """
 
-
-# Run the Flask app
 if __name__ == '__main__':
-
-    from google.colab.output import eval_js
-    # print(eval_js("google.colab.kernel.proxyPort(5000)"))
-    app.run()(debug=False,host='0.0.0.0')
+    app.run(port=5000)
