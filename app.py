@@ -8,14 +8,23 @@ nltk.download('punkt')
 app = Flask(__name__)
 
 # Load the model
-model = load_model('sentiment_model.h5')
+model = None
 
 # Load the tokenizer
-with open('tokenizer.pickle', 'rb') as handle:
-    tokenizer = pickle.load(handle)
+tokenizer = None
+
+# Function to initialize the model and tokenizer
+def initialize_model_and_tokenizer():
+    global model, tokenizer
+    model = load_model('sentiment_model.h5')
+    with open('tokenizer.pickle', 'rb') as handle:
+        tokenizer = pickle.load(handle)
 
 # Function to analyze sentiment
 def analyze_sentiment(text):
+    global model, tokenizer
+    if model is None or tokenizer is None:
+        initialize_model_and_tokenizer()
     negative_text = ''
     count = 0
     paragraphs = text.split('\n\n')
@@ -43,5 +52,6 @@ def index():
         return render_template('index.html', negative_text=negative_text, count=count, dark_mode=dark_mode)
     return render_template('index.html', dark_mode=dark_mode)
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    initialize_model_and_tokenizer()
+    app.run(debug=True)
