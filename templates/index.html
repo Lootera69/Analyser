@@ -23,6 +23,8 @@
 
       /* Form Styles */
       form {
+        display: flex;
+        flex-direction: column;
         max-width: 600px;
         margin: 0 auto;
         background-color: rgba(41, 41, 41, 0.8); /* Translucent background */
@@ -34,8 +36,8 @@
 
       /* Textarea Styles */
       textarea {
-        width: calc(100% - 22px);
-        height: 150px;
+        max-width: calc(100%);
+        height: 190px;  
         padding: 10px;
         font-size: 16px;
         border: 1px solid #444;
@@ -43,13 +45,14 @@
         box-sizing: border-box;
         background-color: #333;
         color: #fff;
+        margin-bottom: 10px; /* Add some bottom margin */
       }
 
       /* Submit Button Styles */
       input[type=submit] {
         background-color: #61dafb;
         color: #fff;
-        padding: 10px 20px;
+        padding: 10px 25px;
         border: none;
         border-radius: 6px;
         cursor: pointer;
@@ -58,6 +61,13 @@
       }
       input[type=submit]:hover {
         background-color: #55acee;
+      }
+
+      /* Word Counter Styles */
+      .word-counter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       /* Result Styles */
@@ -81,7 +91,7 @@
         left: 0;
         width: calc(100% - 50px);
         background-color: rgba(41, 41, 41, 0.8); /* Translucent background */
-        padding: 10px 20px;
+        padding: 3px 30px;
         text-align: center;
         font-size: 12px;
         border-top: 1px solid #444;
@@ -121,10 +131,11 @@
     <h1>Unfair Clause Analyzer</h1>
     <form method="post">
       <label for="text">Paste terms and conditions here:</label><br>
-      <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea><br>
-      <!-- Added red class to display word count in red when limit exceeded -->
-      <span id="word-count" class="red">0/10000</span><br>
-      <input type="submit" value="Analyze" onclick="return checkWordCount()">
+      <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea>
+      <div class="word-counter">
+        <span id="word-count" class="red">0/10000</span>
+        <input type="submit" value="Analyze" onclick="return checkWordCount()">
+      </div>
     </form>
     {% if negative_text %}
     <div class="result">
@@ -151,7 +162,7 @@
         var text = document.getElementById('text').value;
         var wordCount = text.trim().split(/\s+/).length;
         if (wordCount < 2) {
-          alert('Please enter some text to analyze!');
+          alert('Please paste terms and conditions to analyze!');
           return false;
         }
         if (wordCount > 10000) {
