@@ -1,8 +1,5 @@
-pandas
-scikit-learn
+Flask
 tensorflow
-keras
-flask
 nltk
 openpyxl
 gunicorn
