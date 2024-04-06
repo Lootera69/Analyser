@@ -78,14 +78,20 @@
         margin-top: 0.1px;
         margin-bottom: 0.1px;
       }
+      /* Added style for red text */
+      #word-count.red {
+        color: red;
+      }
     </style>
   </head>
   <body>
     <h1>Unfair Clause Analyzer</h1>
     <form method="post">
       <label for="text">Enter text:</label><br>
-      <textarea name="text" rows="5" cols="50"></textarea><br>
-      <input type="submit" value="Analyze">
+      <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea><br>
+      <!-- Added red class to display word count in red when limit exceeded -->
+      <span id="word-count" class="red">0/10000</span><br>
+      <input type="submit" value="Analyze" onclick="return checkWordCount()">
     </form>
     {% if negative_text %}
     <div class="result">
@@ -96,5 +102,27 @@
     <div class="bottom-border">
       <p class="disclaimer">Disclaimer: Unfair clause analyzer can make mistakes. Take a moment to verify pertinent information.</p>
     </div>
+    <script>
+      function countWords(text) {
+        var wordCount = text.trim().split(/\s+/).length;
+        var wordCountElement = document.getElementById('word-count');
+        wordCountElement.innerText = wordCount + '/10000';
+        if (wordCount > 10000) {
+          wordCountElement.classList.add('red');
+        } else {
+          wordCountElement.classList.remove('red');
+        }
+      }
+
+      function checkWordCount() {
+        var text = document.getElementById('text').value;
+        var wordCount = text.trim().split(/\s+/).length;
+        if (wordCount > 10000) {
+          alert('Word limit exceeded! Please reduce the word count to 10,000 or less.');
+          return false;
+        }
+        return true;
+      }
+    </script>
   </body>
 </html>
