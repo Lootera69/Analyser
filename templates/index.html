@@ -7,11 +7,28 @@
       /* Body Styles */
       body {
         font-family: Arial, sans-serif;
-        background-color: #1e1e1e;
         color: #fff;
-        padding: 20px;
         margin: 0;
-        overflow-y: scroll;
+      }
+
+      /* Video Styles */
+      #video-background {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -1; /* Place video behind other content */
+        background-size: cover;
+      }
+
+      /* Content Container Styles */
+      .content-container {
+        position: relative; /* Ensure content stays above video */
+        z-index: 1; /* Place content above video */
+        padding: 20px;
       }
 
       /* Header Styles */
@@ -19,7 +36,7 @@
         color: #61dafb;
         text-align: center;
         margin-top: 0;
-        font-size: 36px; /* Larger font size */
+        font-size: 44px; /* Larger font size */
       }
 
       /* Form Styles */
@@ -80,7 +97,7 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        color: #fff;
+        backdrop-filter: blur(10px); /* Apply blur effect */
       }
       .negative-sentence {
         color: red;
@@ -130,23 +147,29 @@
     </style>
   </head>
   <body>
-    <h1>Unfair Clause Analyzer</h1>
-    <form method="post">
-      <label for="text">Paste terms and conditions here:</label><br>
-      <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea>
-      <div class="word-counter">
-        <span id="word-count" class="red">0/10000</span>
-        <input type="submit" value="Analyze" onclick="return checkWordCount()">
+    <video autoplay loop muted id="video-background">
+      <source src="/static/bg.mp4" type="video/mp4">
+      <!-- Add more sources if necessary for different formats -->
+    </video>
+    <div class="content-container">
+      <h1>Unfair Clause Analyzer</h1>
+      <form method="post">
+        <label for="text">Paste terms and conditions here:</label><br>
+        <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea>
+        <div class="word-counter">
+          <span id="word-count" class="red">0/10000</span>
+          <input type="submit" value="Analyze" onclick="return checkWordCount()">
+        </div>
+      </form>
+      {% if negative_text %}
+      <div class="result">
+        <p><strong>Total number of negative sentences: {{ count }} {% if count == 0 %}😊{% elif count < 5 %}😐{% else %}😡{% endif %}</strong></p>
+        <p>{{ negative_text|safe }}</p>
       </div>
-    </form>
-    {% if negative_text %}
-    <div class="result">
-      <p><strong>Total number of negative sentences: {{ count }} {% if count == 0 %}😊{% elif count < 5 %}😐{% else %}😡{% endif %}</strong></p>
-      <p>{{ negative_text|safe }}</p>
-    </div>
-    {% endif %}
-    <div class="bottom-border">
-      <p class="disclaimer">Disclaimer: Unfair clause analyzer can make mistakes. Take a moment to verify pertinent information.</p>
+      {% endif %}
+      <div class="bottom-border">
+        <p class="disclaimer">Disclaimer: Unfair clause analyzer can make mistakes. Take a moment to verify pertinent information.</p>
+      </div>
     </div>
     <script>
       function countWords(text) {
@@ -173,6 +196,36 @@
         }
         return true;
       }
+
+      // Set initial video size based on window size
+      window.addEventListener('load', function() {
+        var video = document.getElementById('video-background');
+        var aspectRatio = video.videoWidth / video.videoHeight;
+        var windowAspectRatio = window.innerWidth / window.innerHeight;
+
+        if (aspectRatio > windowAspectRatio) {
+          video.style.width = 'auto';
+          video.style.height = '100%';
+        } else {
+          video.style.width = '100%';
+          video.style.height = 'auto';
+        }
+      });
+
+      // Adjust video size on window resize
+      window.addEventListener('resize', function() {
+        var video = document.getElementById('video-background');
+        var aspectRatio = video.videoWidth / video.videoHeight;
+        var windowAspectRatio = window.innerWidth / window.innerHeight;
+
+        if (aspectRatio > windowAspectRatio) {
+          video.style.width = 'auto';
+          video.style.height = '100%';
+        } else {
+          video.style.width = '100%';
+          video.style.height = 'auto';
+        }
+      });
     </script>
   </body>
 </html>
