@@ -9,6 +9,7 @@
         font-family: Arial, sans-serif;
         color: #fff;
         margin: 0;
+        padding: 0; /* Add this line to remove default padding */
       }
 
       /* Video Styles */
@@ -36,7 +37,21 @@
         color: #61dafb;
         text-align: center;
         margin-top: 0;
-        font-size: 44px; /* Larger font size */
+        font-size: 40px; /* Larger font size */
+        position: relative; /* Add this line */
+        z-index: 2; /* Add this line */
+      }
+
+      /* Add this style for translucent rectangle */
+      .header-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100px; /* Adjust the height as needed */
+        background-color: rgba(41, 41, 41, 0.8); /* Adjust the opacity as needed */
+        backdrop-filter: blur(10px);
+        z-index: 1;
       }
 
       /* Form Styles */
@@ -98,6 +113,7 @@
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(10px); /* Apply blur effect */
+        font-size: 20px;
       }
       .negative-sentence {
         color: red;
@@ -130,7 +146,7 @@
         width: 10px;
       }
       ::-webkit-scrollbar-track {
-        background: rgba(41, 41, 41, 0.5); /* Translucent background */
+        background-color: rgba(41, 41, 41, 0.8); /* Translucent background */
       }
       ::-webkit-scrollbar-thumb {
         background: #61dafb; /* Scroll thumb color */
@@ -144,17 +160,75 @@
       #word-count.red {
         color: red;
       }
+
+      /* Project Name Styles */
+      .project-name {
+        position: fixed; /* Change position to fixed */
+        top: 20px;
+        left: 40px;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 0 10px #61dafb, 0 0 20px #61dafb, 0 0 30px #61dafb;
+        z-index: 2; /* Ensure it appears above the header background */
+        font-size: 48px; /* Larger font size */
+      }
+      
+      /* Feedback Block Styles */
+      .feedback-block {
+        position: fixed;
+        bottom: 30px;
+        left: 20px;
+        background-color: #61dafb;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        z-index: 3; /* Ensure it appears above other elements */
+      }
+      
+      .feedback-block a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      
+      .feedback-block a:hover {
+        text-decoration: underline;
+      }
+      
+      /* Scroll to Top Button Styles */
+      .scroll-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 20px;
+        background-color: #61dafb;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        display: none; /* Initially hide the button */
+        z-index: 3; /* Ensure it appears above other elements */
+      }
+
     </style>
   </head>
   <body>
+    <div class="header-background"></div>
+    <div class="project-name"><sup>CLAUSE<sup>3</sup></sup></div>
     <video autoplay loop muted id="video-background">
       <source src="/static/bg.mp4" type="video/mp4">
       <!-- Add more sources if necessary for different formats -->
     </video>
+    <div class="feedback-block">
+      <a href="mailto:chetan.harsigh@gmai.com">Feedback</a>
+    </div>
+    
     <div class="content-container">
       <h1>Unfair Clause Analyzer</h1>
       <form method="post">
-        <label for="text">Paste terms and conditions here:</label><br>
+        <label for="text" style="font-size: 20x;">Paste terms and conditions here:</label><br>
         <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea>
         <div class="word-counter">
           <span id="word-count" class="red">0/10000</span>
@@ -171,6 +245,10 @@
         <p class="disclaimer">Disclaimer: Unfair clause analyzer can make mistakes. Take a moment to verify pertinent information.</p>
       </div>
     </div>
+    
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" onclick="scrollToTop()">Scroll to Top</button>
+
     <script>
       function countWords(text) {
         var wordCount = text.trim().split(/\s+/).length;
@@ -196,7 +274,7 @@
         }
         return true;
       }
-
+      
       // Set initial video size based on window size
       window.addEventListener('load', function() {
         var video = document.getElementById('video-background');
@@ -226,6 +304,24 @@
           video.style.height = 'auto';
         }
       });
+
+      // Show or hide scroll-to-top button based on scroll position
+      window.onscroll = function() {scrollFunction()};
+
+      function scrollFunction() {
+        var scrollToTopButton = document.querySelector('.scroll-to-top');
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          scrollToTopButton.style.display = "block";
+        } else {
+          scrollToTopButton.style.display = "none";
+        }
+      }
+
+      // Scroll to top function
+      function scrollToTop() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+      }
     </script>
   </body>
 </html>
