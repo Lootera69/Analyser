@@ -9,7 +9,7 @@
         font-family: Arial, sans-serif;
         color: #fff;
         margin: 0;
-        padding: 0; /* Add this line to remove default padding */
+        padding: 0;
       }
 
       /* Video Styles */
@@ -21,15 +21,15 @@
         min-height: 100%;
         width: auto;
         height: auto;
-        z-index: -1; /* Place video behind other content */
+        z-index: -1;
         background-size: cover;
       }
 
       /* Content Container Styles */
       .content-container {
-        position: relative; /* Ensure content stays above video */
-        z-index: 1; /* Place content above video */
-        padding: 20px;
+        position: relative;
+        z-index: 1;
+        padding: 10px;
       }
 
       /* Header Styles */
@@ -37,9 +37,8 @@
         color: #61dafb;
         text-align: center;
         margin-top: 0;
-        font-size: 40px; /* Larger font size */
-        position: relative; /* Add this line */
-        z-index: 2; /* Add this line */
+        user-select: none;
+        font-size: 36px; /* Smaller font size */
       }
 
       /* Add this style for translucent rectangle */
@@ -48,72 +47,65 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100px; /* Adjust the height as needed */
-        background-color: rgba(41, 41, 41, 0.8); /* Adjust the opacity as needed */
+        height: 70px; /* Adjusted height */
+        background-color: rgba(41, 41, 41, 0.8);
         backdrop-filter: blur(10px);
         z-index: 1;
       }
 
       /* Form Styles */
       form {
-        display: flex;
-        flex-direction: column;
-        max-width: 600px;
+        max-width: 550px;
         margin: 0 auto;
-        background-color: rgba(41, 41, 41, 0.8); /* Translucent background */
-        padding: 20px;
+        background-color: rgba(41, 41, 41, 0.8);
+        padding: 10px;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(10px); /* Apply blur effect */
+        backdrop-filter: blur(10px);
       }
 
       /* Textarea Styles */
       textarea {
         min-width: calc(100%);
         max-width: calc(100%);
-        height: 190px;  
+        height: 220px;
         padding: 10px;
-        font-size: 16px;
+        font-size: 14px; /* Smaller font size */
         border: 1px solid #444;
         border-radius: 6px;
         box-sizing: border-box;
         background-color: #333;
         color: #fff;
-        margin-bottom: 10px; /* Add some bottom margin */
+        margin-bottom: 10px;
       }
 
       /* Submit Button Styles */
       input[type=submit] {
         background-color: #61dafb;
         color: #fff;
-        padding: 10px 25px;
+        padding: 10px 25px; /* Adjusted padding */
         border: none;
         border-radius: 6px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 14px; /* Smaller font size */
         transition: background-color 0.3s ease;
+        float: right;
+        margin-top: -10px;
       }
       input[type=submit]:hover {
         background-color: #55acee;
       }
 
-      /* Word Counter Styles */
-      .word-counter {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
       /* Result Styles */
       .result {
-        max-width: 600px;
+        max-width: 550px;
         margin: 20px auto 0;
-        background-color: rgba(41, 41, 41, 0.8); /* Translucent background */
-        padding: 20px;
+        background-color: rgba(41, 41, 41, 0.8);
+        padding: 10px;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(10px); /* Apply blur effect */
-        font-size: 20px;
+        backdrop-filter: blur(10px);
+        font-size: 16px; /* Adjusted font size */
       }
       .negative-sentence {
         color: red;
@@ -124,36 +116,20 @@
         position: fixed;
         bottom: 0;
         left: 0;
-        width: calc(100% - 50px);
-        background-color: rgba(41, 41, 41, 0.8); /* Translucent background */
-        padding: 3px 30px;
+        width: 100%;
+        background-color: rgba(41, 41, 41, 0.8);
+        padding: 3px 20px; /* Adjusted padding */
         text-align: center;
         font-size: 12px;
         border-top: 1px solid #444;
-        backdrop-filter: blur(10px); /* Apply blur effect */
+        backdrop-filter: blur(10px);
       }
 
       /* Disclaimer Styles */
       .disclaimer {
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.8); /* Translucent text */
-        margin-top: 0.1px;
-        margin-bottom: 0.1px;
-      }
-
-      /* Scrollbar Styles */
-      ::-webkit-scrollbar {
-        width: 10px;
-      }
-      ::-webkit-scrollbar-track {
-        background-color: rgba(41, 41, 41, 0.8); /* Translucent background */
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #61dafb; /* Scroll thumb color */
-        border-radius: 5px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #55acee; /* Scroll thumb hover color */
+        font-size: 12px; /* Adjusted font size */
+        color: rgba(255, 255, 255, 0.8);
+        margin: 2px 0; /* Adjusted margin */
       }
 
       /* Added style for red text */
@@ -163,53 +139,80 @@
 
       /* Project Name Styles */
       .project-name {
-        position: fixed; /* Change position to fixed */
-        top: 20px;
-        left: 40px;
+        position: fixed;
+        user-select: none;
+        top: 5px; /* Adjusted top */
+        left: 20px; /* Adjusted left */
         font-weight: bold;
         color: #fff;
         text-shadow: 0 0 10px #61dafb, 0 0 20px #61dafb, 0 0 30px #61dafb;
-        z-index: 2; /* Ensure it appears above the header background */
-        font-size: 48px; /* Larger font size */
+        z-index: 2;
+        font-size: 48px; /* Smaller font size */
       }
-      
+
+      /* Profile Picture Styles */
+      .profile-picture {
+        position: fixed;
+        top: 10px; /* Adjusted top */
+        right: 20px; /* Adjusted right */
+        z-index: 2;
+        width: 50px; /* Adjusted width */
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 50%; /* Make it circular */
+      }
+
       /* Feedback Block Styles */
       .feedback-block {
         position: fixed;
-        bottom: 30px;
-        left: 20px;
+        bottom: 31px; /* Adjusted bottom */
+        left: 10px; /* Adjusted left */
         background-color: #61dafb;
-        padding: 10px 20px;
+        padding: 5px 10px; /* Adjusted padding */
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        z-index: 3; /* Ensure it appears above other elements */
+        z-index: 3;
+        font-size: 14px; /* Adjusted font size */
       }
-      
+
       .feedback-block a {
         color: #fff;
         text-decoration: none;
         font-weight: bold;
-        font-size: 16px;
       }
-      
+
       .feedback-block a:hover {
         text-decoration: underline;
       }
-      
+
       /* Scroll to Top Button Styles */
       .scroll-to-top {
         position: fixed;
-        bottom: 30px;
+        bottom: 31px;
         right: 20px;
         background-color: #61dafb;
         color: #fff;
         border: none;
         border-radius: 5px;
-        padding: 10px 20px;
-        font-size: 16px;
+        padding: 8px 16px; /* Adjusted padding */
+        font-size: 14px; /* Adjusted font size */
         cursor: pointer;
-        display: none; /* Initially hide the button */
-        z-index: 3; /* Ensure it appears above other elements */
+        display: none;
+        z-index: 3;
+      }
+
+      /* Scrollbar Styles */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background-color: rgba(41, 41, 41, 0.8);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #61dafb;
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #55acee;
       }
 
     </style>
@@ -217,9 +220,9 @@
   <body>
     <div class="header-background"></div>
     <div class="project-name"><sup>CLAUSE<sup>3</sup></sup></div>
+    <img src="/static/pfp.jpg" alt="Profile Picture" class="profile-picture"> <!-- Added profile picture -->
     <video autoplay loop muted id="video-background">
       <source src="/static/bg.mp4" type="video/mp4">
-      <!-- Add more sources if necessary for different formats -->
     </video>
     <div class="feedback-block">
       <a href="mailto:chetan.harsigh@gmail.com?subject=Feedback%20-%20Clause%20Analyzer">Feedback</a>
@@ -227,7 +230,7 @@
     <div class="content-container">
       <h1>Unfair Clause Analyzer</h1>
       <form method="post">
-        <label for="text" style="font-size: 20x;">Paste terms and conditions here:</label><br>
+        <label for="text" style="font-size: 18px;">Paste terms and conditions here:</label><br>
         <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea>
         <div class="word-counter">
           <span id="word-count" class="red">0/10000</span>
@@ -318,8 +321,8 @@
 
       // Scroll to top function
       function scrollToTop() {
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
       }
     </script>
   </body>
