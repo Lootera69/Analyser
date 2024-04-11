@@ -125,6 +125,21 @@
         backdrop-filter: blur(10px);
       }
 
+      /* Social Icons Styles */
+      .social-icons {
+        position: fixed;
+        bottom: 1.5px;
+        right: 3px;
+        z-index: 3;
+      }
+      
+      .social-icons .icon {
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+      }
+      
+
       /* Disclaimer Styles */
       .disclaimer {
         font-size: 12px; /* Adjusted font size */
@@ -160,6 +175,28 @@
         height: auto; /* Maintain aspect ratio */
         border-radius: 50%; /* Make it circular */
       }
+
+      /* Submit Button Styles */
+    input[type=submit] {
+    background-color: #61dafb;
+    color: #fff;
+    padding: 10px 25px; /* Adjusted padding */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px; /* Smaller font size */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    float: right;
+    margin-top: -10px;
+    position: relative; /* Added position */
+    overflow: hidden; /* Added overflow to hide overflowed shadow */
+}
+
+    input[type=submit]:hover {
+    box-shadow: 0 0 0 10px rgba(85, 172, 238, 0.5); /* Adjusted shadow */
+    transform: scale(1.1); /* Added scale effect */
+}
+
 
       /* Feedback Block Styles */
       .feedback-block {
@@ -234,7 +271,7 @@
         <textarea name="text" id="text" rows="5" cols="50" onkeyup="countWords(this.value)"></textarea>
         <div class="word-counter">
           <span id="word-count" class="red">0/10000</span>
-          <input type="submit" value="Analyze" onclick="return checkWordCount()">
+          <input type="submit" class="button" value="Analyze" onclick="return checkWordCount()">
         </div>
       </form>
       {% if negative_text %}
@@ -247,6 +284,18 @@
         <p class="disclaimer">Disclaimer: Unfair clause analyzer can make mistakes. Take a moment to verify pertinent information.</p>
       </div>
     </div>
+    <div class="social-icons">
+      <a href="https://github.com/Lootera69" target="_blank">
+        <img src="/static/github_icon.png" alt="GitHub" class="icon">
+      </a>
+      <a href="https://www.linkedin.com/in/chsinghh" target="_blank">
+        <img src="/static/linkedin_icon.png" alt="LinkedIn" class="icon">
+      </a>
+      <a href="https://twitter.com/lootera_69" target="_blank">
+        <img src="/static/twitter_icon.png" alt="Twitter" class="icon">
+      </a>
+    </div>
+    
     
     <!-- Scroll to Top Button -->
     <button class="scroll-to-top" onclick="scrollToTop()">Scroll to Top</button>
