@@ -56,7 +56,7 @@ Clause Analyzer is a tool designed to assist in identifying potentially unfair c
 Contributions to the project are welcome! Feel free to submit bug reports, feature requests, or pull requests via GitHub.
 
 ## Credits
-- Developed by [Your Name or Organization]
+- Developed by Chetan Harshit Singh
 - Icons sourced from [Icon Source]
 - Background video sourced from [Video Source]
 
